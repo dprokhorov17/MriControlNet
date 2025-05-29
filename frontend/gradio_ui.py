@@ -122,7 +122,7 @@ outputs = [
 
 examples = [
     [
-        "frontend/example_images/mri_brain.jpg",
+        "example_images/mri_brain.jpg",
         "mri brain scan, good quality",
         "animal, drawing, painting, vivid colors, longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality",
         20,
