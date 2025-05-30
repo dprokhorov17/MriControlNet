@@ -7,6 +7,11 @@ This repository contains a frontend and backend implementation for processing MR
 - Generate synthetic brain scan images using ControlNet.
 - Apply color transfer modes to processed images.
 
+## Example Gradio UI
+Below is an example of the Gradio UI for the application:
+
+![Gradio Example](gradio_example.png)
+
 ## Prerequisites
 - Docker and Docker Compose installed.
 - Python 3.10 or higher installed.
@@ -49,7 +54,7 @@ cd MriControlNet
 3. Start the FastAPI server:
    ```bash
    cd frontend
-   python gradio_ui.py
+   python main.py
    ```
 
 #### Frontend
@@ -72,6 +77,31 @@ cd MriControlNet
 
 ## Configuration
 - The backend API URL can be configured using the `API_URL` environment variable. Default is `http://localhost:8000/process`.
+
+### Environment Configuration
+
+Create a `.env` file in the backend directory based on the provided `.env.example` file. This file contains configuration variables for the application.
+
+#### Example `.env` File
+```bash
+APP_TITLE=ControlNet Image Processing API
+APP_VERSION=1.0.0
+DEFAULT_CONTROLNET_MODEL=lllyasviel/control_v11p_sd15_canny
+DEFAULT_SD_MODEL=runwayml/stable-diffusion-v1-5
+DEVICE=cuda
+DEFAULT_IMAGE_RESOLUTION=768
+DEFAULT_LOW_THRESHOLD=120
+DEFAULT_HIGH_THRESHOLD=240
+LOG_LEVEL=DEBUG
+MAX_FILE_SIZE_MB=10
+```
+
+#### Instructions
+1. Copy the `.env.example` file to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+2. Modify the values in the `.env` file as needed for your environment.
 
 ## Example Usage
 1. Upload an MRI image.

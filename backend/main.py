@@ -9,7 +9,7 @@ import logging
 
 # Internal imports
 from config.settings import get_settings
-from models.processing_request import ProcessingRequest
+from data_models.processing_request import ProcessingRequest
 from pipeline_manager import PipelineManager
 from controlnet_handler import ControlNetHandler
 from color_transfer import ColorTransfer

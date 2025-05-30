@@ -4,7 +4,7 @@ from PIL import Image
 
 from color_transfer import ColorTransfer
 from controlnet_handler import ControlNetHandler
-from models.processing_request import ProcessingRequest
+from data_models.processing_request import ProcessingRequest
 
 
 logger = logging.getLogger(__name__)
