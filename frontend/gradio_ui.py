@@ -65,12 +65,11 @@ def process_image_with_controlnet(
     def decode_image(b64_str):
         return Image.open(BytesIO(base64.b64decode(b64_str)))
 
-    original = decode_image(result["original"])
     control = decode_image(result["control"])
     generated = decode_image(result["generated"])
     color_transferred = decode_image(result["color_transferred"])
 
-    return original, control, generated, color_transferred
+    return color_transferred, control, generated
 
 
 # Gradio Interface UI Components
@@ -114,10 +113,9 @@ inputs = [
 ]
 
 outputs = [
-    gr.Image(label="🖼️ Original Image", type="pil"),
-    gr.Image(label="🔍 Control Image (Canny Edge)", type="pil"),
-    gr.Image(label="✨ Generated Image", type="pil"),
     gr.Image(label="🎨 Color Transferred Image", type="pil"),
+    gr.Image(label="🔍 Control Image (Canny Edge)", type="pil"),
+    gr.Image(label="✨ Generated Image", type="pil")
 ]
 
 examples = [
