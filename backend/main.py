@@ -1,3 +1,10 @@
+"""FastAPI backend for MRI ControlNet image processing.
+
+This module provides the REST API endpoints for the MRI ControlNet application,
+handling image uploads, processing requests, and serving processed results.
+The API supports image processing with ControlNet and color transfer operations.
+"""
+
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse
 from io import BytesIO
@@ -31,6 +38,14 @@ image_processor = ImageProcessor()
 
 
 def image_to_base64(image: Image.Image) -> str:
+    """Convert a PIL Image to base64 string.
+
+    Args:
+        image (Image.Image): PIL Image to convert
+
+    Returns:
+        str: Base64 encoded string of the image
+    """
     buffered = BytesIO()
     image.save(buffered, format="PNG")
     return base64.b64encode(buffered.getvalue()).decode()
@@ -38,6 +53,10 @@ def image_to_base64(image: Image.Image) -> str:
 
 @app.on_event("startup")
 async def startup_event():
+    """Initialize the application on startup.
+
+    Sets up the ControlNet and Stable Diffusion pipeline.
+    """
     try:
         logger.info("Initializing pipeline on startup...")
         pipeline_manager.setup_pipeline()
@@ -47,6 +66,22 @@ async def startup_event():
 
 @app.post("/process")
 async def process_image(file: UploadFile = File(...), params: str = ""):
+    """Process an uploaded image using ControlNet and color transfer.
+
+    Args:
+        file (UploadFile): The input image file
+        params (str): JSON string containing processing parameters
+
+    Returns:
+        JSONResponse: Dictionary containing base64-encoded versions of:
+            - original: Input image
+            - control: Edge detection result
+            - generated: ControlNet generation
+            - color_transferred: Final processed image
+
+    Raises:
+        HTTPException: If processing fails
+    """
     try:
         if params:
             params_dict = json.loads(params)
@@ -79,6 +114,11 @@ async def process_image(file: UploadFile = File(...), params: str = ""):
 
 @app.get("/health")
 async def health_check():
+    """Check the health status of the application.
+
+    Returns:
+        dict: Health status and pipeline state
+    """
     return {"status": "healthy", "pipeline_loaded": pipeline_manager.is_loaded()}
 
 

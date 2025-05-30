@@ -1,34 +1,42 @@
+# Docker Compose configuration for MRI ControlNet
+# This file defines the multi-container application setup with GPU support.
+# It includes both the backend API service and the frontend Gradio interface.
+
 version: '3.8'
 
 services:
 
   backend:
+    # FastAPI backend service with GPU support
     build:
       context: .
       dockerfile: backend.Dockerfile
     ports:
-      - "8000:8000"
+      - "8000:8000"  # Maps host port 8000 to container port 8000
     volumes:
+      # Persists HuggingFace model cache between container restarts
       - ~/.cache/huggingface:/root/.cache/huggingface
     environment:
-      - PYTHONUNBUFFERED=1
+      - PYTHONUNBUFFERED=1  # Enables real-time Python logging
+    # NVIDIA GPU configuration
     deploy:
       resources:
         reservations:
           devices:
             - driver: nvidia
-              count: all
+              count: all  # Use all available GPUs
               capabilities: [gpu]
     restart: unless-stopped
 
   frontend:
+    # Gradio web interface service
     build:
       context: .
       dockerfile: frontend.Dockerfile
     ports:
-      - "7860:7860"
+      - "7860:7860"  # Maps host port 7860 to container port 7860
     environment:
-      - API_URL=http://backend:8000/process
+      - API_URL=http://backend:8000/process  # Points to backend service
     depends_on:
-      - backend
+      - backend  # Ensures backend starts first
     restart: unless-stopped

@@ -1,3 +1,10 @@
+"""Gradio-based web interface for MRI ControlNet.
+
+This module provides a user-friendly web interface for the MRI ControlNet application
+using Gradio. It allows users to upload images, adjust processing parameters, and
+view results in real-time.
+"""
+
 import gradio as gr
 from PIL import Image
 import base64
@@ -23,8 +30,32 @@ def process_image_with_controlnet(
     color_transfer_mode,
     color_transfer_strength,
 ):
-    """
-    Sends the uploaded image and parameters to FastAPI backend and returns processed images.
+    """Process an image using the ControlNet backend service.
+    
+    Args:
+        image (PIL.Image): Input image to process
+        prompt (str): Text prompt for image generation
+        negative_prompt (str): Text prompt for features to avoid
+        num_inference_steps (int): Number of denoising steps
+        guidance_scale (float): How closely to follow the prompt
+        controlnet_conditioning_scale (float): Strength of ControlNet conditioning
+        low_threshold (int): Lower threshold for edge detection
+        high_threshold (int): Upper threshold for edge detection
+        seed (int): Random seed for reproducible generation (-1 for random)
+        image_resolution (int): Output image size
+        color_transfer_mode (str): Color transfer algorithm to use
+        color_transfer_strength (float): Intensity of color transfer
+    
+    Returns:
+        tuple: Tuple containing:
+            - Original image
+            - Edge detection result
+            - Generated image
+            - Color-transferred result
+    
+    Raises:
+        ValueError: If no image is provided
+        requests.RequestException: If API request fails
     """
     if image is None:
         raise ValueError("No image provided")
