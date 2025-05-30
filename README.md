@@ -28,12 +28,12 @@ cd MriControlNet
 
 1. Build the Docker images:
    ```bash
-   docker-compose build
+   docker compose build
    ```
 
 2. Start the containers:
    ```bash
-   docker-compose up
+   docker compose up
    ```
 
 3. Access the Gradio UI at `http://localhost:7860`.
